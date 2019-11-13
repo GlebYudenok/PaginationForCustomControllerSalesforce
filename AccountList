@@ -1,0 +1,20 @@
+<apex:page controller="AccountConroller">
+    <apex:form>
+        <apex:pageBlock id="accounts_id">
+        	<apex:pageBlockTable value="{!accounts}" var="acc">
+            	<apex:column value="{!acc.Name}" />
+            </apex:pageBlockTable>
+                 
+            <apex:commandButton action="{!goFirst}" disabled="{!DisabledFirst}" reRender="accounts_id" value="First" />
+            <apex:commandButton action="{!goPrevious}" disabled="{!DisabledPrevious}" reRender="accounts_id" value="Previous" />
+            <apex:commandButton action="{!goNext}" disabled="{!DisabledNext}" reRender="accounts_id" value="Next" />
+            <apex:commandButton action="{!goLast}" disabled="{!DisabledLast}" reRender="accounts_id" value="Last"/>
+            
+            Page:&nbsp;
+            <apex:outputText value="{!pageNumber}"/>
+            Total:&nbsp;
+            <apex:outputText value="{!totalPages}"/>
+                
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
