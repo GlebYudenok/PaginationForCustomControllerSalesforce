@@ -1,0 +1,23 @@
+<apex:page controller="CustomControllerPagination" >
+    <apex:form>
+    	<apex:pageBlock id="contacts_id">
+        	<apex:pageBlockTable value="{!conList}" var="c">
+            	<apex:column value="{!c.Name}" />
+            </apex:pageBlockTable>
+            
+            <apex:panelGrid columns="7">
+				<apex:commandButton action="{!setCon.first}" reRender="contacts_id" value="|<" disabled="{!!setCon.hasPrevious}" title="First Page"/>
+				<apex:commandButton action="{!setCon.previous}" reRender="contacts_id" value="<" disabled="{!!setCon.hasPrevious}" title="Previous Page"/>
+				<apex:commandButton action="{!setCon.next}" reRender="contacts_id" value=">" disabled="{!!setCon.hasNext}" title="Next Page"/>
+				<apex:commandButton action="{!setCon.last}" reRender="contacts_id" value=">|" disabled="{!!setCon.hasNext}" title="Last Page"/>
+				<apex:outputText >{!(setCon.pageNumber * size)+1-size}-{!IF((setCon.pageNumber * size)>noOfRecords, noOfRecords,(setCon.pageNumber * size))} of {!noOfRecords}</apex:outputText>
+				
+                <apex:actionStatus id="PaginationStatus">
+					<apex:facet name="start"><img src="/img/loading.gif" alt="" /></apex:facet>
+					<apex:facet name="stop"></apex:facet>
+				</apex:actionStatus>
+                
+			</apex:panelGrid>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
