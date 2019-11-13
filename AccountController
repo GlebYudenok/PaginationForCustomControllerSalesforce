@@ -1,0 +1,90 @@
+public class AccountConroller {
+    
+    private integer pageNumber; //number of current page
+    private integer currentPage; //amount of records from 0 to amount on current page
+    private final integer pageSize = 5; //size of page (amount of records on page)
+  
+    public List<Account> accounts;
+    private integer totalPages;
+    
+    public AccountConroller() {
+        currentPage = 0;
+        accounts = [SELECT Name FROM Account LIMIT :pageSize];
+        totalPages = ([SELECT count() FROM Account]) / pageSize;
+        pageNumber = 1;
+    }
+    
+    public List<Account> getAccounts() {
+        return accounts;
+    }  
+    
+    public pagereference goNext(){
+        pageNumber++;  
+        currentPage += pageSize; 
+        accounts = [SELECT Name FROM Account LIMIT :pageSize OFFSET :currentPage];
+        return null;
+    }
+    
+    public pagereference goPrevious() {
+        pageNumber--;
+        if(pageNumber == 1) {
+            goFirst();
+        }else {
+        	currentPage -= pageSize;
+        	accounts = [SELECT Name FROM Account LIMIT :pageSize OFFSET :currentPage];
+        }
+        return null;
+    }
+    
+    public Boolean getDisabledPrevious() {
+        if(pageNumber == 1) {
+            return true;
+        }
+        return false;
+    }
+    
+    public Boolean getDisabledNext() {
+        if(pageNumber == totalPages) {
+            return true;
+        }
+        return false;
+    }
+    
+    public integer getTotalPages() {
+        return totalPages;
+    }
+    
+    public pagereference goFirst() {
+        pageNumber = 1;
+        accounts = [SELECT Name FROM Account LIMIT :pageSize];
+        currentPage = 0;
+        return null;
+    }
+    
+    public Boolean getDisabledFirst() {
+        if(pageNumber == 1) {
+            return true;
+        }
+        return false;
+    }
+    
+    public Integer getPageNumber() {
+        return pageNumber;
+    }
+    
+    public pagereference goLast() {
+        pageNumber = totalPages;
+        currentPage = [SELECT count() FROM Account] - pageSize;
+        integer total = currentPage;
+        accounts = [SELECT Name FROM Account LIMIT :pageSize OFFSET :total];
+        System.debug(currentPage);
+        return null;
+    }
+    
+    public Boolean getDisabledLast() {
+        if(totalPages == pageNumber){
+            return true;
+        }
+        return false;
+    }
+}
